@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GSP</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="frame">
-        <div class="button-container">
-            <button class="frame-button">Button 1</button>
-            <button class="frame-button">Button 2</button>
-            <button class="frame-button">Button 3</button>
+      <div class="content-area">
+        <!-- Top-right buttons -->
+        <div class="top-right-buttons">
+          <!-- Updated HTML for Mobile Icon -->
+          <button class="icon-button">
+            <img src="mobile.svg" alt="Mobile Icon" class="icon-image" />
+          </button>
+          <button class="icon-button">
+            <img src="desktop.svg" alt="Desktop Icon" class="icon-image" />
+          </button>
+          <button class="icon-button">
+            <img src="arrows.svg" alt="Arrows Icon" class="icon-image" />
+          </button>
         </div>
-        <div class="content-area">
-            <!-- Your iframe will be placed here -->
+
+        <!-- Bottom-center buttons -->
+        <div class="bottom-center-buttons">
+          <button class="icon-button">&lt;</button>
+          <button class="icon-button">&gt;</button>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
