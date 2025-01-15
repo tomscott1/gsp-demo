@@ -22,7 +22,7 @@ viewer.addSplatScene('./koala.ksplat', {
     viewer.start();
 });
 
-container.appendChild(viewer);
+// container.appendChild(viewer);
 
 
 // const renderWidth = 800;
