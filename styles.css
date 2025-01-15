@@ -65,4 +65,19 @@ body {
   display: flex;
 }
 
-/* deploy */
+.content-area {
+  position: relative;
+  overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+

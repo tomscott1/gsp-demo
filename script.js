@@ -1,48 +1,87 @@
-// Set up scene, camera, and renderer
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(800, 600);
-renderer.setPixelRatio(window.devicePixelRatio);
+// import { Viewer, WebXRMode, RenderMode, SceneRevealMode, LogLevel } from './GaussianSplats3D/build/gaussian-splats-3d.module.min.js';
+// import * as THREE from './node_modules/three/build/three.module.js';
 
-// Append renderer to the container
+import * as GaussianSplats3D from './GaussianSplats3D/build/gaussian-splats-3d.module.min.js';
+
+// // Get the container element
 const container = document.getElementById('container');
-container.appendChild(renderer.domElement);
 
-// Add ambient light and directional light
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 5, 5);
-scene.add(light);
-const ambientLight = new THREE.AmbientLight(0x404040);
-scene.add(ambientLight);
-
-// Load the spiked ball PLY file
-const loader = new THREE.PLYLoader();
-loader.load('./koala_stuffie.ply', function (geometry) {
-  const material = new THREE.MeshStandardMaterial({ color: 0xff5733, flatShading: true });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-
-  // Automatically position the camera to fit the object
-  const boundingBox = new THREE.Box3().setFromObject(mesh);
-  const size = new THREE.Vector3();
-  boundingBox.getSize(size);
-
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const fov = camera.fov * (Math.PI / 180); // Convert FOV to radians
-  const distance = Math.abs(maxDim / Math.sin(fov / 2));
-  camera.position.set(0, 0, distance * 1.5); // Adjust distance multiplier for better view
-  camera.lookAt(boundingBox.getCenter(new THREE.Vector3()));
+const viewer = new GaussianSplats3D.Viewer({
+    'cameraUp': [0, -1, -0.6],
+    'initialCameraPosition': [-1, -4, 6],
+    'initialCameraLookAt': [0, 4, 0]
+});
+viewer.addSplatScene('./koala.ksplat', {
+    'splatAlphaRemovalThreshold': 5,
+    'showLoadingUI': true,
+    'position': [0, 1, 0],
+    'rotation': [0, 0, 0, 1],
+    'scale': [1.5, 1.5, 1.5]
+})
+.then(() => {
+    viewer.start();
 });
 
-// Add orbit controls for rotation
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // Smooth movement
+container.appendChild(viewer);
 
-// Animation loop
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update(); // Update orbit controls
-  renderer.render(scene, camera);
-}
-animate();
+
+// const renderWidth = 800;
+// const renderHeight = 600;
+
+// // Get the container element
+// const container = document.getElementById('container');
+
+// // Create Three.js renderer
+// const renderer = new THREE.WebGLRenderer({
+//   antialias: false
+// });
+// renderer.setSize(renderWidth, renderHeight);
+// container.appendChild(renderer.domElement); // Attach canvas to the content-area
+
+// // Set up the camera
+// const camera = new THREE.PerspectiveCamera(65, renderWidth / renderHeight, 0.1, 500);
+// camera.position.set(-1, -4, 6);
+// camera.up.set(0, -1, -0.6).normalize();
+// camera.lookAt(0, 4, 0);
+
+// // Initialize the Gaussian Splats Viewer
+// const viewer = new Viewer({
+//   renderer,
+//   camera,
+//   selfDrivenMode: false,
+//   useBuiltInControls: false,
+//   ignoreDevicePixelRatio: false,
+//   gpuAcceleratedSort: true,
+//   enableSIMDInSort: true,
+//   sharedMemoryForWorkers: true,
+//   integerBasedSort: true,
+//   halfPrecisionCovariancesOnGPU: true,
+//   dynamicScene: false,
+//   webXRMode: WebXRMode.None,
+//   renderMode: RenderMode.OnChange,
+//   sceneRevealMode: SceneRevealMode.Instant,
+//   antialiased: false,
+//   focalAdjustment: 1.0,
+//   logLevel: LogLevel.None,
+//   sphericalHarmonicsDegree: 0,
+//   enableOptionalEffects: false,
+//   inMemoryCompressionLevel: 2,
+//   freeIntermediateSplatData: false
+// });
+
+// // Load the Gaussian Splat model
+// viewer
+//   .addSplatScene('./koala.ksplat') // Replace with your actual file path
+//   .then(() => {
+//     console.log('Model loaded successfully');
+//     requestAnimationFrame(update);
+//   })
+//   .catch((error) => {
+//     console.error('Error loading Gaussian splat model:', error);
+//   });
+
+// // Animation loop
+// function update() {
+//   viewer.render(); // Render the scene
+//   requestAnimationFrame(update);
+// }

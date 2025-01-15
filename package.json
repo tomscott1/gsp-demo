@@ -1,0 +1,21 @@
+{
+  "name": "gsp-main",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "deploy": "vite build && vite-gh-pages"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "three": "^0.172.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7",
+    "vite-plugin-gh-pages": "^1.0.1"
+  }
+}
