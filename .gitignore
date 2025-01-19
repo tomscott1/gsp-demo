@@ -10,7 +10,7 @@ GaussianSplats3D/build/*
 # Allow only the specific file you need
 !GaussianSplats3D/build/gaussian-splats-3d.module.min.js
 
-node_modules
+node_modules/
 
 # Ignore everything in the GaussianSplats3D folder
 GaussianSplats3D/*
