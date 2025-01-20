@@ -25,3 +25,5 @@ GaussianSplats3D/build/*
 !GaussianSplats3D/build/gaussian-splats-3d.module.min.js
 
 *exterior.splat
+
+node_modules

@@ -1,8 +1,10 @@
 import React from 'react';
+import Viewer from './components/Viewer';
 
 const App = () => {
   return (
     <div className="frame">
+      <Viewer />
       <div className="top-right-buttons">
         <button className="icon-button">
           <img src="/gsp-demo/icons/mobile.svg" alt="Mobile Icon" className="icon-image" />
