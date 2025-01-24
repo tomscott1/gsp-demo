@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { CameraControls, Environment } from '@react-three/drei';
-import { Splat } from '../splat';
-import ClickableBox from './ClickableBox';
+import React, {useRef, useState} from "react";
+import {Canvas} from "@react-three/fiber";
+import {CameraControls, Environment} from "@react-three/drei";
+import {Splat} from "../splat";
+import ClickableBox from "./ClickableBox";
 
 export default function Viewer() {
+  const [showExterior, setShowExterior] = useState(true);
   const cameraRef = useRef(); // Ref to access the camera
   const controlsRef = useRef(); // Ref to access the camera controls
 
@@ -17,11 +18,16 @@ export default function Viewer() {
       const camera = cameraRef.current;
       const controls = controlsRef.current;
 
+      const offsetX = -zoomDistance / 2; // Move left (negative X)
+      const offsetY = zoomDistance / 3; // Move up (positive Y)
+      const offsetZ = zoomDistance; // Move forward (positive Z)
+
       camera.position.set(
-        targetPosition[0],
-        targetPosition[1],
-        targetPosition[2] + zoomDistance
+        targetPosition[0] + offsetX,
+        targetPosition[1] + offsetY,
+        targetPosition[2] + offsetZ
       );
+
       controls.setLookAt(
         camera.position.x,
         camera.position.y,
@@ -32,17 +38,59 @@ export default function Viewer() {
         true // Smooth transition
       );
     }
+    setShowExterior(false);
+  };
+
+  const resetView = () => {
+    if (cameraRef.current && controlsRef.current) {
+      const camera = cameraRef.current;
+      const controls = controlsRef.current;
+
+      // Set the camera position and look-at target to the default view
+      camera.position.set(0, 0, 1);
+      controls.setLookAt(0, 0, 1, 0, 0, 0, true); // Smooth transition
+    }
+    setShowExterior(true);
   };
 
   return (
     <>
+      {!showExterior ? (
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            left: 10,
+            zIndex: 100,
+            background: "white",
+            padding: "10px",
+            borderRadius: "5px",
+            boxShadow: "0px 0px 10px rgba(0,0,0,0.2)",
+          }}
+        >
+          <button
+            onClick={resetView}
+            style={{
+              border: "none",
+              borderRadius: "3px",
+              backgroundColor: "white",
+              color: "black",
+              cursor: "pointer",
+            }}
+          >
+            Show Exterior
+          </button>
+        </div>
+      ) : null}
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0, 1], fov: 70 }}
-        onCreated={({ camera }) => (cameraRef.current = camera)}
+        camera={{position: [0, 0, 1], fov: 70}}
+        onCreated={({camera}) => (cameraRef.current = camera)}
       >
-        <color attach="background" args={['#C4D9FF']} />
-        <Splat scale={1} rotation={[0, Math.PI, 0]} src="model.splat" />
+        <color attach="background" args={["#C4D9FF"]} />
+        {showExterior ? (
+          <Splat scale={1} rotation={[0, Math.PI, 0]} src="model.splat" />
+        ) : null}
         <Environment preset="apartment" />
         <CameraControls
           ref={controlsRef}
