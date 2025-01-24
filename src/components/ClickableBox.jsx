@@ -7,13 +7,17 @@ const ClickableBox = ({ onClick }) => {
   return (
     <mesh
       ref={meshRef}
-      position={[0, 0, 0]} // Set the box position
-      scale={[0.3, 0.033, 0.3]} // Set the box dimensions (width, height, depth)
+      position={[0.01, 0.31, -0.01]} // Set the box position
+      scale={[0.3, 0.033, 0.33]} // Set the box dimensions (width, height, depth)
       onClick={onClick} // Register the onClick event
     >
-      <boxGeometry args={[1, 1, 1]} /> {/* Simple box geometry */}
+      <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
-        color="red" // Set the color to red or any visible color
+        color="yellow" // Base color
+        emissive="yellow" // Glow effect
+        emissiveIntensity={1.5} // Increase for stronger glow
+        transparent
+        opacity={0.5} // Set transparency
       />
     </mesh>
   );
