@@ -55,33 +55,13 @@ export default function Viewer() {
 
   return (
     <>
-      {!showExterior ? (
-        <div
-          style={{
-            position: "absolute",
-            top: 10,
-            left: 10,
-            zIndex: 100,
-            background: "white",
-            padding: "10px",
-            borderRadius: "5px",
-            boxShadow: "0px 0px 10px rgba(0,0,0,0.2)",
-          }}
-        >
-          <button
-            onClick={resetView}
-            style={{
-              border: "none",
-              borderRadius: "3px",
-              backgroundColor: "white",
-              color: "black",
-              cursor: "pointer",
-            }}
-          >
+      <div>
+        {!showExterior && (
+          <button className="show-exterior-button" onClick={resetView}>
             Show Exterior
           </button>
-        </div>
-      ) : null}
+        )}
+      </div>
       <Canvas
         dpr={[1, 1.5]}
         camera={{position: [0, 0, 1], fov: 70}}

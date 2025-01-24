@@ -18,6 +18,21 @@ body {
   position: relative;
 }
 
+.show-exterior-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+
+
 @media (max-width: 768px) {
   .frame {
     height: 100vh;
@@ -26,6 +41,11 @@ body {
     max-width: 100vw;
     border: none;
     border-radius: 0;
+  }
+  .show-exterior-button {
+    top: 5px;
+    left: 5px;
+    padding: 8px;
   }
 
   .top-right-buttons {

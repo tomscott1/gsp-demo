@@ -6,7 +6,8 @@
     "start": "vite",
     "build": "vite build",
     "deploy-vite": "vite build && vite-gh-pages",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "bd": "npm run build && npm run deploy"
   },
   "keywords": [],
   "author": "",
