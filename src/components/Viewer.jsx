@@ -58,7 +58,7 @@ export default function Viewer() {
       <div>
         {!showExterior && (
           <button className="show-exterior-button" onClick={resetView}>
-            Show Exterior
+            Exterior View
           </button>
         )}
       </div>

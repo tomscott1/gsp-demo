@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import { useGLTF } from '@react-three/drei';
+import {useRef} from "react";
+import {useGLTF} from "@react-three/drei";
 
-const ClickableBox = ({ onClick }) => {
+const ClickableBox = ({onClick}) => {
   const meshRef = useRef();
 
   return (
@@ -14,10 +14,10 @@ const ClickableBox = ({ onClick }) => {
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
         color="yellow" // Base color
-        emissive="yellow" // Glow effect
-        emissiveIntensity={1.5} // Increase for stronger glow
+        emissive="orange" // Glow effect
+        emissiveIntensity={1} // Increase for stronger glow
         transparent
-        opacity={0.5} // Set transparency
+        opacity={0.35} // Set transparency
       />
     </mesh>
   );
