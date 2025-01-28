@@ -3,6 +3,9 @@ import {Canvas} from "@react-three/fiber";
 import {CameraControls, Environment} from "@react-three/drei";
 import {Splat} from "../splat";
 import ClickableBox from "./ClickableBox";
+import {CubeTextureLoader, TextureLoader} from "three";
+import {Plane} from "@react-three/drei";
+
 
 export default function Viewer() {
   const [showExterior, setShowExterior] = useState(true);
@@ -53,6 +56,8 @@ export default function Viewer() {
     setShowExterior(true);
   };
 
+  // const groundTexture = new TextureLoader().load("negy.jpg");
+
   return (
     <>
       <div>
@@ -65,9 +70,24 @@ export default function Viewer() {
       <Canvas
         dpr={[1, 1.5]}
         camera={{position: [0, 0, 1], fov: 70}}
-        onCreated={({camera}) => (cameraRef.current = camera)}
+        onCreated={({camera, scene}) => {
+          cameraRef.current = camera;
+
+          // Load the cube map
+          const cubeTextureLoader = new CubeTextureLoader();
+          const cubeMap = cubeTextureLoader.load([
+            "posx.jpg", // "px.jpg", // Right
+            "negx.jpg", // "nx.jpg", // Left
+            "posy.jpg", // "py.jpg", // Top
+            "negy.jpg", // "ny.jpg", // Bottom
+            "posz.jpg", // "pz.jpg", // Front
+            "negz.jpg", // "nz.jpg", // Back
+          ]);
+
+          // Set the cube map as the scene background
+          scene.background = cubeMap;
+        }}
       >
-        <color attach="background" args={["#C4D9FF"]} />
         {showExterior ? (
           <Splat scale={1} rotation={[0, Math.PI, 0]} src="model.splat" />
         ) : null}
@@ -77,6 +97,8 @@ export default function Viewer() {
           enablePan={true}
           enableZoom={true}
           enableRotate={true}
+          minPolarAngle={0} // Prevents the camera from flipping upside down
+          maxPolarAngle={Math.PI / 2 - 0.1} // Limits the downward angle
         />
         <ClickableBox onClick={handleBoxClick} />
       </Canvas>
