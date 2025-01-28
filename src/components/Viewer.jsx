@@ -6,15 +6,14 @@ import ClickableBox from "./ClickableBox";
 import {CubeTextureLoader, TextureLoader} from "three";
 import {Plane} from "@react-three/drei";
 
-
 export default function Viewer() {
   const [showExterior, setShowExterior] = useState(true);
   const cameraRef = useRef(); // Ref to access the camera
   const controlsRef = useRef(); // Ref to access the camera controls
 
   const handleBoxClick = () => {
-    const targetPosition = [0.01, 0.31, -0.01]; // Position of the box
-    const zoomDistance = 0.3; // Adjust for the desired zoom distance
+    const targetPosition = [0.01, 0.26, -0.01]; // Position of the box
+    const zoomDistance = 0.2; // Adjust for the desired zoom distance
 
     // Smoothly move the camera to the target position
     if (cameraRef.current && controlsRef.current) {
@@ -22,7 +21,7 @@ export default function Viewer() {
       const controls = controlsRef.current;
 
       const offsetX = -zoomDistance / 2; // Move left (negative X)
-      const offsetY = zoomDistance / 3; // Move up (positive Y)
+      const offsetY = zoomDistance / 5; // Move up (positive Y)
       const offsetZ = zoomDistance; // Move forward (positive Z)
 
       camera.position.set(
@@ -90,7 +89,14 @@ export default function Viewer() {
       >
         {showExterior ? (
           <Splat scale={1} rotation={[0, Math.PI, 0]} src="model.splat" />
-        ) : null}
+        ) : (
+          <Splat
+            scale={1.1}
+            rotation={[Math.PI, Math.PI, 0]}
+            src="model_int.splat"
+            position={[0, -0.1, 0]}
+          />
+        )}
         <Environment preset="apartment" />
         <CameraControls
           ref={controlsRef}
@@ -100,7 +106,10 @@ export default function Viewer() {
           minPolarAngle={0} // Prevents the camera from flipping upside down
           maxPolarAngle={Math.PI / 2 - 0.1} // Limits the downward angle
         />
-        <ClickableBox onClick={handleBoxClick} />
+        {showExterior ? (
+          <ClickableBox onClick={handleBoxClick} />
+        ) : null }
+        
       </Canvas>
     </>
   );
