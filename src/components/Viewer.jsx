@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {Canvas} from "@react-three/fiber";
 import {CameraControls, Environment} from "@react-three/drei";
 import {Splat} from "../splat";
@@ -10,6 +10,12 @@ export default function Viewer() {
   const [showExterior, setShowExterior] = useState(true);
   const cameraRef = useRef(); // Ref to access the camera
   const controlsRef = useRef(); // Ref to access the camera controls
+
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.setLookAt(0, 0.2, 1.5, 0, -0.1, 0, true);
+    }
+  }, []);
 
   const handleBoxClick = () => {
     const targetPosition = [0.01, 0.26, -0.01]; // Position of the box
@@ -68,7 +74,7 @@ export default function Viewer() {
       </div>
       <Canvas
         dpr={[1, 1.5]}
-        camera={{position: [0, 0, 1], fov: 70}}
+        camera={{position: [0, 0.2, 1], fov: 70}}
         onCreated={({camera, scene}) => {
           cameraRef.current = camera;
 
