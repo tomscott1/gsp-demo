@@ -8,6 +8,7 @@ import {Plane} from "@react-three/drei";
 
 export default function Viewer() {
   const [showExterior, setShowExterior] = useState(true);
+  const [isInteriorLoaded, setIsInteriorLoaded] = useState(false);
   const cameraRef = useRef(); // Ref to access the camera
   const controlsRef = useRef(); // Ref to access the camera controls
 
@@ -15,9 +16,22 @@ export default function Viewer() {
     if (controlsRef.current) {
       controlsRef.current.setLookAt(0, 0.2, 1.5, 0, -0.1, 0, true);
     }
+
+    // Preload interior
+    const preloadModel = async () => {
+      const response = await fetch("model_int.splat");
+      if (response.ok) {
+        console.log('Interior Loaded!')
+        setIsInteriorLoaded(true);
+      }
+    };
+
+    preloadModel();
   }, []);
 
   const handleBoxClick = () => {
+    if (isInteriorLoaded) setShowExterior(false);
+    
     const targetPosition = [0.01, 0.26, -0.01]; // Position of the box
     const zoomDistance = 0.2; // Adjust for the desired zoom distance
 
@@ -45,6 +59,10 @@ export default function Viewer() {
         targetPosition[2],
         true // Smooth transition
       );
+
+      // Set the FOV and update the projection matrix
+      camera.fov = 50; // Adjust FOV as needed
+      camera.updateProjectionMatrix();
     }
     setShowExterior(false);
   };
@@ -55,8 +73,10 @@ export default function Viewer() {
       const controls = controlsRef.current;
 
       // Set the camera position and look-at target to the default view
+      camera.fov = 70;
       camera.position.set(0, 0, 1);
       controls.setLookAt(0, 0, 1, 0, 0, 0, true); // Smooth transition
+      camera.updateProjectionMatrix();
     }
     setShowExterior(true);
   };
@@ -74,7 +94,7 @@ export default function Viewer() {
       </div>
       <Canvas
         dpr={[1, 1.5]}
-        camera={{position: [0, 0.2, 1], fov: 70}}
+        camera={{position: [0, 0, 1], fov: 70}}
         onCreated={({camera, scene}) => {
           cameraRef.current = camera;
 
@@ -112,10 +132,7 @@ export default function Viewer() {
           minPolarAngle={0} // Prevents the camera from flipping upside down
           maxPolarAngle={Math.PI / 2 - 0.1} // Limits the downward angle
         />
-        {showExterior ? (
-          <ClickableBox onClick={handleBoxClick} />
-        ) : null }
-        
+        {showExterior ? <ClickableBox onClick={handleBoxClick} /> : null}
       </Canvas>
     </>
   );
